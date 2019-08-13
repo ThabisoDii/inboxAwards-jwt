@@ -15,7 +15,7 @@ public class RegistrationController {
     @Autowired
     private RegistrationService registrationService;
 
-    @PostMapping("/inbox10/registration")
+    @PostMapping("/public/inbox10/registration")
     public ResponseEntity<Optional<?>> registerUser(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO){
         return registrationService.saveUser(userRegistrationDTO);
 

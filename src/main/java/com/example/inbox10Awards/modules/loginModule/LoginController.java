@@ -32,13 +32,13 @@ public class LoginController {
     private AuthenticationRepository authenticationRepository;
 
 ///inbox10/registration
-    @PostMapping("/inbox10/authenticate")
+    @PostMapping("/public/inbox10/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody UserLoginCreditialsDTO userLoginCreditialsDTO) throws Exception {
 
-        AuthenticationEntity authenticationEntity = authenticationRepository.findByEmail(userLoginCreditialsDTO.getEmail());
+        Optional<AuthenticationEntity> authenticationEntity = authenticationRepository.findByEmail(userLoginCreditialsDTO.getEmail());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-       if(passwordEncoder.matches(userLoginCreditialsDTO.getPassword(), authenticationEntity.getPassword())){
+       if(passwordEncoder.matches(userLoginCreditialsDTO.getPassword(), authenticationEntity.get().getPassword())){
            authenticate(userLoginCreditialsDTO.getEmail(), userLoginCreditialsDTO.getPassword());
            final UserDetails userDetails = loginServices
                    .loadUserByUsername(userLoginCreditialsDTO.getEmail());

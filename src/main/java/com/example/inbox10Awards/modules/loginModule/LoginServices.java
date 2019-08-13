@@ -4,14 +4,19 @@ import com.example.inbox10Awards.modules.authenticationModule.AuthenticationEnti
 import com.example.inbox10Awards.modules.authenticationModule.AuthenticationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class LoginServices implements UserDetailsService {
@@ -20,16 +25,15 @@ public class LoginServices implements UserDetailsService {
     private AuthenticationRepository authenticationRepository;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
+        Optional<AuthenticationEntity> authenticationEntity = authenticationRepository.findByEmail(email);
+        authenticationEntity.orElseThrow(() -> new UsernameNotFoundException("No user found with username " + email));
 
-        System.out.println("validating got in..."+email);
-        if(true){
-            System.out.println("validating got in...");
-            return new User(email,"$2a$10$4ou0VSQ7SQxfy3dxHrzoTO7my/tnQGZX7MP0hDy8ORgRjRxziXiCi",new ArrayList<>());
-        }else {
-            throw  new UsernameNotFoundException("User not found");
-        }
+      //  return new User(authenticationEntity.get().getEmail(),authenticationEntity.get().getPassword());
 
+            return new org.springframework.security.core.userdetails.User(authenticationEntity.get().getEmail(),
+                authenticationEntity.get().getPassword(), new ArrayList<>());
     }
 }

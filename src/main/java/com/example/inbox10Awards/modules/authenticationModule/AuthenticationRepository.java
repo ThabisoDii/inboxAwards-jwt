@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 @Transactional
 public interface AuthenticationRepository extends JpaRepository<AuthenticationEntity,String> {
@@ -12,7 +14,7 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
 
     //boolean existsCarByModel(String model);
 
-    AuthenticationEntity findByEmail(String email);
+    Optional<AuthenticationEntity> findByEmail(String email);
 
     boolean existsAuthenticationEntityByEmailAndPassword(String email,String password);
 

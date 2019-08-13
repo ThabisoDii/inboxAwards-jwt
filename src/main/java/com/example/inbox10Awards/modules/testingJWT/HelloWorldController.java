@@ -17,7 +17,7 @@ public class HelloWorldController {
         String username = "";
         try{
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
-             username = jwtTokenUtil.getUsernameFromToken(headers.get("authorization").replace("Bearer",""));
+             username = jwtTokenUtil.getUsernameFromToken(headers.get("authorization").replace("Bearer",""));//getting the email from the token
         }catch (Exception ex){
             ex.printStackTrace();
         }
